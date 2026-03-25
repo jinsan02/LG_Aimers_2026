@@ -1,0 +1,27 @@
+# ===== 모델 가중치 (GitHub 100MB 제한 초과) =====
+**/*.safetensors
+**/*.bin
+
+# ===== 아카이브 (대용량 zip) =====
+04_archive/
+
+# ===== 데이터셋 캐시 =====
+datasets/**/*.arrow
+datasets/**/cache-*.arrow
+
+# ===== Python 캐시 =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ===== pip 설치 잔여물 =====
+=0.1.0
+
+# ===== 출력 결과물 =====
+02_output/
+
+# ===== 환경 파일 =====
+.env
+*.log
