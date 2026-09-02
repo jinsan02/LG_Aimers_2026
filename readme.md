@@ -1,44 +1,81 @@
-# 🚀 [Portfolio] EXAONE 4.0 1.2B 경량화 및 지능 최적화 프로젝트
+# EXAONE 4.0 1.2B 경량화 및 추론 최적화
 
-## 1. Project Overview
-본 프로젝트는 LG AI Research의 **EXAONE 4.0 1.2B** 모델을 활용하여, 제한된 하드웨어 자원(L4 GPU) 환경에서 모델의 추론 속도를 극대화하고 지능(Accuracy) 손실을 최소화하는 것을 목표로 하였습니다.
+Hanshin University Computer Engineering | Roh Jin-san (GPA 3.7/4.5)
 
-* **Final Score:** **0.61537** (초기 대비 약 62% 성능 향상)
-* **Key Achievement:** W4A16 양자화와 16k 컨텍스트 확장을 동시에 달성
-* **Roles:** 알고리즘 선정(AWQ/GPTQ), 데이터셋 큐레이션, 메모리 최적화, 벤치마크 파이프라인 구축
+LG AI Research의 EXAONE 4.0 1.2B를 제한된 L4 GPU 환경에서 경량화하면서, 양자화 방식·캘리브레이션 데이터·문맥 길이가 정확도와 추론 비용에 미치는 영향을 반복 실험한 프로젝트입니다.
 
----
+## 핵심 결과
 
-## 2. Problem & Solution (Troubleshooting)
+| 구분 | 결과 | 근거 |
+|---|---|---|
+| 최고 평가 제출 | submit_v37_absolute.zip, Public Score **0.6153749319**, 평가 시간 **9분 45초** | 제출 기록 및 01_workspace/final.py |
+| 최고 제출 설정 | FP8 W8A8, calibration 512개, max sequence length 1024 | 01_workspace/final.py |
+| 최종 내부 개발 버전 | **v58**, AWQ W4A16·16k context·RoPE 조정·FP8 KV cache | 01_workspace/train_v50.py, 03_submission/model/ |
 
-### 핵심 문제 1: 양자화에 따른 급격한 지능 하락
-* **Problem:** 단순 GPTQ W4A16 적용 시, 수학(GSM8K) 및 논리 추론 능력이 FP16 대비 30% 이상 하락하는 현상 발생.
-* **Solution:** **AWQ(Activation-aware Weight Quantization)** 알고리즘으로 전환. **Duo Scaling** 기법을 통해 활성화 값이 큰 '중요 채널'을 보호하여 지능 하락 방어 성공.
-* **Result:** GSM8K와 KMMLU 점수를 복구하며 0.6점대 진입.
+> 제출 파일명에 남은 v37과 내부 최종 버전 v58은 서로 다른 관리 시점의 버전명입니다. 최고 평가 기록과 최종 내부 개발 산출물을 혼동하지 않도록 분리해 기술합니다.
 
-### 핵심 문제 2: 컨텍스트 확장과 메모리 병목
-* **Problem:** 16k 확장을 위해 `max_position_embeddings`를 과도하게 설정(64k)할 경우, vLLM Serving 시 KV 캐시가 메모리를 과점유하여 추론 속도가 급격히 저하됨.
-* **Solution:** 서버 사양에 맞춘 **16,384(16k) 최적 다이어트** 실시. `rope_scaling`의 factor를 2.0으로 최적화하고 `low_freq_factor` 누락에 따른 엔진 오류를 해결하여 안정성 확보.
+## final.py의 역할
 
-### 핵심 문제 3: 로컬 환경의 자원 한계 (Killed 에러)
-* **Problem:** 384개 이상의 샘플로 양자화 공정 시 RAM 부족으로 프로세스가 강제 종료(Killed)됨.
-* **Solution:** **'Diet Calibration'** 전략 수립. `batch_size=1` 하향 및 샘플 수 최적화를 통해 로컬 자원 내에서 공정 완수.
+01_workspace/final.py는 저장소에서 가장 높은 평가 기록을 낸 submit_v37_absolute.zip 생성 스크립트입니다. 이름의 final은 최신 내부 버전 번호가 아니라 **최고 평가 제출용 빌드 스크립트**라는 의미입니다.
 
----
+- MANTA 128개
+- GSM8K 128개
+- KMMLU 256개
+- 총 calibration sample 512개
+- calibration max sequence length 1024
+- weight: 8-bit FLOAT, static
+- input activation: 8-bit FLOAT, dynamic
+- embed_tokens, lm_head 제외
 
-## 3. Technical Deep Dive (Specialties)
+제출 화면에는 16,384 context가 기록돼 있습니다. 다만 final.py는 context 값을 직접 변경하지 않고 외부 /content/drive/MyDrive/comp/base_model 상태를 사용하므로, 정확한 재현에는 실행 당시 base config 보존이 추가로 필요합니다.
 
-### 📊 성능 비교 분석
-* **Latency:** FP8 모델(10.7ms/t) 대비 W4A16 AWQ 모델(**8.4ms/t**)로 약 **21% 속도 향상**.
-* **Efficiency:** `kv_cache_dtype="fp8"` 적용을 통해 긴 문맥 추론 시 메모리 대역폭 확보.
+## 내부 최종 버전 v58
 
+01_workspace/train_v50.py는 내부 개발이 v58까지 진행된 뒤 사용한 AWQ 경량화 스크립트입니다.
 
+- AWQ W4A16 asymmetric
+- 16,384 context
+- RoPE factor 2.0
+- rope theta 10,000
+- FP8 KV cache 설정
+- batch size 1
+- 실제 코드 기준 calibration max sequence length 768
 
-### 🏗️ 아키텍처 최적화 설정
-* **Attention:** RoPE Theta 값 조절(1M → 10k)을 통한 단문 정밀도 복구.
-* **Quantization Layer:** 지능의 중추인 `embed_tokens`와 `lm_head`를 양자화 대상에서 제외(Ignore List)하여 유창성 유지.
+03_submission/model/config.json과 recipe.yaml은 v58 계열 설정을 보존합니다. GitHub 용량 제한 때문에 모델 weight와 제출 ZIP은 저장소에 포함하지 않습니다.
 
----
+## 실험 과정
 
-## 4. Retrospective & Growth
-이 프로젝트를 통해 모델의 파라미터 수만큼이나 **데이터 밸런스(Manta/GSM/KMMLU)**와 **하드웨어 친화적 설정**이 실무에서 얼마나 중요한지 깨달았습니다. 특히 4비트 환경에서도 16k 문맥을 안정적으로 처리해낸 경험은 향후 대규모 언어 모델 서빙 역량에 큰 자산이 될 것입니다.
+1. FP8 W8A8 기준선 구축
+2. GPTQ W4A16 및 activation order 실험
+3. MANTA·GSM8K·KMMLU·MBPP calibration 구성 비교
+4. FP8 precision-defense 실험
+5. 16k context 확장과 메모리 병목 대응
+6. AWQ·Duo Scaling 전환
+7. batch size 조정과 Diet Calibration으로 메모리 피크 억제
+
+실험은 항상 점수가 개선된 것은 아닙니다. 특히 일부 AWQ 초기 실험에서는 정확도 하락이 관측됐고, 이를 통해 양자화 알고리즘 자체보다 calibration 구성과 context·kernel 설정의 상호작용이 중요하다는 점을 확인했습니다.
+
+## 개인 역할
+
+- FP8·GPTQ·AWQ 양자화 방식 비교
+- calibration dataset 구성과 sampling 전략 설계
+- 8k→16k context 확장 및 RoPE 설정 조정
+- 메모리 부족·vLLM 초기화 오류·prompt 오류 해결
+- 제출 모델 패키징과 benchmark pipeline 구성
+
+## 재현성과 한계
+
+- 저장소는 32개의 실험·benchmark 스크립트를 보존하지만, 초기 개발 이력이 한 번의 공개 커밋으로 정리돼 Git commit만으로 시간순 실행을 복원할 수 없습니다.
+- 파일명과 내부 실험 버전이 다른 경우가 있어 milestones.md에서 대응 관계를 설명합니다.
+- 모델 weight, ZIP, 일부 원본 평가 로그는 GitHub 용량 제한으로 제외했습니다.
+- 최고 점수 0.6153749319와 9분 45초는 제출 기록으로 확인했으며, 다른 중간 점수는 milestones.md의 실험 기록으로 구분합니다.
+- README에 원본 결과 파일이 없는 latency 수치는 사용하지 않습니다.
+
+## Repository Map
+
+- 01_workspace/final.py: 최고 평가 제출 v37 빌드
+- 01_workspace/train_v50.py: 내부 최종 v58 AWQ 빌드
+- 01_workspace/benchmark*.py: 정확도·latency 평가 도구
+- 03_submission/model/: v58 설정 및 tokenizer 산출물
+- history.md: 개발 단계와 기술 의사결정
+- milestones.md: 제출·실험 버전 기록
