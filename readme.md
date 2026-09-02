@@ -1,5 +1,4 @@
 # 🚀 [Portfolio] EXAONE 4.0 1.2B 경량화 및 지능 최적화 프로젝트
-**Hanshin University Computer Engineering | Roh Jin-san (GPA 3.7/4.5)**
 
 ## 1. Project Overview
 본 프로젝트는 LG AI Research의 **EXAONE 4.0 1.2B** 모델을 활용하여, 제한된 하드웨어 자원(L4 GPU) 환경에서 모델의 추론 속도를 극대화하고 지능(Accuracy) 손실을 최소화하는 것을 목표로 하였습니다.
