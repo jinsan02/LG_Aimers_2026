@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 0 1024 412" width="1024" height="412" role="img" aria-label="EXAONE 4.0 1.2B를 final.py로 FP8 W8A8(calibration 512, L1024) 양자화한 v37이 Public 0.6153749319, 평가 9분 45초로 최고 평가 기록이고, train_v50.py로 AWQ W4A16·16k context·RoPE 2.0·FP8 KV cache를 통합한 v58은 별도 제출 점수가 없는 내부 최종 버전이다">
+<title>두 갈래의 결과 — 최고 평가 제출 v37과 내부 최종 v58</title>
+<style>
+  text { font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #1f2328; }
+  .ink { fill: #1f2328; } .sub { fill: #59636e; } .muted { fill: #818b98; } .lbl { fill: #59636e; }
+  .grid { stroke: #eaeef2; stroke-width: 1; } .base { stroke: #afb8c1; stroke-width: 1; }
+  .s1 { fill: #2a78d6; } .s2 { fill: #eb6834; } .s3 { fill: #1baf7a; } .s4 { fill: #eda100; }
+  .s5 { fill: #e87ba4; } .s6 { fill: #008300; } .s7 { fill: #4a3aa7; } .s8 { fill: #e34948; }
+  .dim { fill: #d0d7de; } .dim2 { fill: #8c959f; }
+  .box  { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1.2; }
+  .em   { fill: #e3eefb; stroke: #2a78d6; stroke-width: 1.6; }
+  .mute { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.2; }
+  .k-auto { fill: #e0f5ec; stroke: #1baf7a; stroke-width: 1.4; }
+  .k-man  { fill: #fdf3d8; stroke: #eda100; stroke-width: 1.4; }
+  .k-todo { fill: none; stroke: #8c959f; stroke-width: 1.2; stroke-dasharray: 5 4; }
+  .grp { fill: none; stroke: #d0d7de; stroke-width: 1; stroke-dasharray: 3 3; }
+  .ln { stroke: #6e7781; stroke-width: 1.4; fill: none; } .ah { fill: #6e7781; }
+  .ln-em { stroke: #2a78d6; stroke-width: 2; fill: none; } .ah-em { fill: #2a78d6; }
+  .dash { stroke-dasharray: 5 4; }
+  @media (prefers-color-scheme: dark) {
+    text, .ink { fill: #e6edf3; } .sub, .lbl { fill: #9198a1; } .muted { fill: #8b949e; }
+    .grid { stroke: #262c36; } .base { stroke: #59636e; }
+    .s1 { fill: #3987e5; } .s2 { fill: #d95926; } .s3 { fill: #199e70; } .s4 { fill: #c98500; }
+    .s5 { fill: #d55181; } .s6 { fill: #008300; } .s7 { fill: #9085e9; } .s8 { fill: #e66767; }
+    .dim { fill: #3d444d; } .dim2 { fill: #6e7681; }
+    .box  { fill: #161b22; stroke: #3d444d; }
+    .em   { fill: #0f2340; stroke: #3987e5; }
+    .mute { fill: #0d1117; stroke: #3d444d; }
+    .k-auto { fill: #0c2a1f; stroke: #199e70; } .k-man { fill: #2e2408; stroke: #c98500; } .k-todo { stroke: #6e7681; }
+    .grp { stroke: #3d444d; }
+    .ln { stroke: #8b949e; } .ah { fill: #8b949e; } .ln-em { stroke: #3987e5; } .ah-em { fill: #3987e5; }
+  }
+</style>
+<text x="0" y="24" font-size="18" font-weight="600" class="ink">두 갈래의 결과 — 최고 평가 제출 v37과 내부 최종 v58</text><text x="0" y="48" font-size="14" class="sub">같은 EXAONE 4.0 1.2B에서 출발한 다른 시점의 버전 · 파란 상자 = 제출 화면으로 확인된 기록</text>
+<g transform="translate(0,64)">
+<rect class="box" x="0" y="110" width="180" height="70" rx="8"/>
+<text x="90" y="130.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">EXAONE 4.0 1.2B</text>
+<text x="90" y="149.5" font-size="13" text-anchor="middle" class="sub">LG AI Research</text>
+<text x="90" y="168.5" font-size="13" text-anchor="middle" class="sub">L4 GPU 제약</text>
+<rect class="em" x="260" y="0" width="360" height="150" rx="8"/>
+<text x="440" y="32" font-size="14" text-anchor="middle" font-weight="600" class="ink">v37 · final.py</text>
+<text x="440" y="51" font-size="13" text-anchor="middle" class="sub">FP8 W8A8 · weight static · activation dynamic</text>
+<text x="440" y="70" font-size="13" text-anchor="middle" class="sub">calibration 512</text>
+<text x="440" y="89" font-size="13" text-anchor="middle" class="sub">MANTA 128 + GSM8K 128 + KMMLU 256</text>
+<text x="440" y="108" font-size="13" text-anchor="middle" class="sub">max sequence length 1024</text>
+<text x="440" y="127" font-size="13" text-anchor="middle" class="sub">embed_tokens · lm_head 제외</text>
+<rect class="box" x="260" y="176" width="360" height="150" rx="8"/>
+<text x="440" y="217.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">v58 · train_v50.py</text>
+<text x="440" y="236.5" font-size="13" text-anchor="middle" class="sub">AWQ W4A16 asymmetric · Duo Scaling</text>
+<text x="440" y="255.5" font-size="13" text-anchor="middle" class="sub">calibration 288 = 96 × 3 · 실제 코드 L768</text>
+<text x="440" y="274.5" font-size="13" text-anchor="middle" class="sub">16,384 context · RoPE factor 2.0 · theta 10,000</text>
+<text x="440" y="293.5" font-size="13" text-anchor="middle" class="sub">FP8 KV cache · batch size 1</text>
+<polyline class="ln" points="180,130 220,130 220,75 251,75"/>
+<polygon class="ah" points="260,75 251,70 251,80"/>
+<polyline class="ln" points="220,130 220,251 251,251"/>
+<polygon class="ah" points="260,251 251,246 251,256"/>
+<rect class="em" x="680" y="30" width="320" height="90" rx="8"/>
+<text x="840" y="60.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">최고 평가 제출</text>
+<text x="840" y="79.5" font-size="13" text-anchor="middle" class="sub">submit_v37_absolute.zip</text>
+<text x="840" y="98.5" font-size="13" text-anchor="middle" class="sub">Public 0.6153749319 · 평가 9분 45초</text>
+<rect class="mute" x="680" y="206" width="320" height="90" rx="8"/>
+<text x="840" y="236.5" font-size="14" text-anchor="middle" font-weight="600" class="ink">내부 최종 개발 산출물</text>
+<text x="840" y="255.5" font-size="13" text-anchor="middle" class="sub">03_submission/model (config · recipe)</text>
+<text x="840" y="274.5" font-size="13" text-anchor="middle" class="sub">별도 제출 점수 없음 · 코드 검증</text>
+<polyline class="ln" points="620,75 671,75"/>
+<polygon class="ah" points="680,75 671,70 671,80"/>
+<polyline class="ln" points="620,251 671,251"/>
+<polygon class="ah" points="680,251 671,246 671,256"/>
+</g>
+</svg>
