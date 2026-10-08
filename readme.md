@@ -1,6 +1,6 @@
 # EXAONE 4.0 1.2B 경량화 및 추론 최적화
 
-Hanshin University Computer Engineering | Roh Jin-san (GPA 3.7/4.5)
+Hanshin University Computer Engineering | Roh Jin-san
 
 LG AI Research의 EXAONE 4.0 1.2B를 제한된 L4 GPU 환경에서 경량화하면서, 양자화 방식·캘리브레이션 데이터·문맥 길이가 정확도와 추론 비용에 미치는 영향을 반복 실험한 프로젝트입니다.
 
@@ -8,13 +8,17 @@ LG AI Research의 EXAONE 4.0 1.2B를 제한된 L4 GPU 환경에서 경량화하�
 
 | 구분 | 결과 | 근거 |
 |---|---|---|
+| 최종 순위 | **115등 / 628** | DACON 대회 프로필 |
 | 최고 평가 제출 | submit_v37_absolute.zip, Public Score **0.6153749319**, 평가 시간 **9분 45초** | 제출 기록 및 01_workspace/final.py |
 | 최고 제출 설정 | FP8 W8A8, calibration 512개, max sequence length 1024 | 01_workspace/final.py |
 | 최종 내부 개발 버전 | **v58**, AWQ W4A16·16k context·RoPE 조정·FP8 KV cache | 01_workspace/train_v50.py, 03_submission/model/ |
 
 > 제출 파일명에 남은 v37과 내부 최종 버전 v58은 서로 다른 관리 시점의 버전명입니다. 최고 평가 기록과 최종 내부 개발 산출물을 혼동하지 않도록 분리해 기술합니다.
 
-## final.py의 역할
+<p align="center"><img src="docs/img/two_versions.svg" alt="최고 평가 제출 v37(FP8 W8A8, Public 0.6153749319)과 내부 최종 v58(AWQ W4A16, 16k)의 설정 비교" width="100%"></p>
+
+<details>
+<summary><b>final.py의 역할 — v37 빌드 설정</b></summary>
 
 01_workspace/final.py는 저장소에서 가장 높은 평가 기록을 낸 submit_v37_absolute.zip 생성 스크립트입니다. 이름의 final은 최신 내부 버전 번호가 아니라 **최고 평가 제출용 빌드 스크립트**라는 의미입니다.
 
@@ -28,8 +32,10 @@ LG AI Research의 EXAONE 4.0 1.2B를 제한된 L4 GPU 환경에서 경량화하�
 - embed_tokens, lm_head 제외
 
 제출 화면에는 16,384 context가 기록돼 있습니다. 다만 final.py는 context 값을 직접 변경하지 않고 외부 /content/drive/MyDrive/comp/base_model 상태를 사용하므로, 정확한 재현에는 실행 당시 base config 보존이 추가로 필요합니다.
+</details>
 
-## 내부 최종 버전 v58
+<details>
+<summary><b>내부 최종 버전 v58 — 설정</b></summary>
 
 01_workspace/train_v50.py는 내부 개발이 v58까지 진행된 뒤 사용한 AWQ 경량화 스크립트입니다.
 
@@ -42,8 +48,11 @@ LG AI Research의 EXAONE 4.0 1.2B를 제한된 L4 GPU 환경에서 경량화하�
 - 실제 코드 기준 calibration max sequence length 768
 
 03_submission/model/config.json과 recipe.yaml은 v58 계열 설정을 보존합니다. GitHub 용량 제한 때문에 모델 weight와 제출 ZIP은 저장소에 포함하지 않습니다.
+</details>
 
 ## 실험 과정
+
+<p align="center"><img src="docs/img/scores.svg" alt="기록된 점수와 평가 시간: v37만 제출 화면으로 확인, 나머지는 내부 기록" width="100%"></p>
 
 1. FP8 W8A8 기준선 구축
 2. GPTQ W4A16 및 activation order 실험
